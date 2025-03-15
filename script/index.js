@@ -9,21 +9,33 @@ const loadAllLevels = () => {
 
 const displayAllLevels = (levels) => {
   const vocabularies = document.getElementById("vocabularies");
-  vocabularies.textContent = "";
-  console.log(levels);
+  const buttonContainer = document.createElement("div");
+  buttonContainer.classList.add(
+    "flex",
+    "justify-center",
+    "items-center",
+    "my-10",
+    "gap-5",
+    "flex-wrap"
+  );
+  vocabularies.textContent = ""; // Clear existing content
+
   levels.forEach((level) => {
     const button = document.createElement("button");
-    button.innerHTML = `
-        <button
-              class="btn btn-outline border border-blue-700 text-blue-700 hover:bg-blue-700 hover:text-white"
-            >
-              <img src="assets/fa-book-open.png" alt="" /> Lesson -1
-            </button>
-      
-        `;
-    vocabularies.appendChild(button);
-    console.log(level.id);
+    button.classList.add(
+      "btn",
+      "btn-outline",
+      "border",
+      "border-blue-700",
+      "text-blue-700",
+      "hover:bg-blue-700",
+      "hover:text-white"
+    );
+    button.innerHTML = `<img src="assets/fa-book-open.png" alt="" /> Lesson -${level.level_no}`;
+    buttonContainer.appendChild(button);
+    console.log(level);
   });
+  vocabularies.appendChild(buttonContainer);
 };
 
 loadAllLevels();

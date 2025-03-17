@@ -39,8 +39,13 @@ const displayAllLevelsWords = (levels) => {
       vocabCard.appendChild(div);
     });
   }
+  if (levels.data.length > 0) {
+    const initialDiv = document.getElementById("initialDiv");
+    initialDiv.classList.add("hidden");
+  }
   if (levels.data.length === 0) {
-    console.log("no data");
+    const epmtyDiv = document.getElementById("emptyDiv");
+    epmtyDiv.classList.remove("hidden");
   }
 };
 

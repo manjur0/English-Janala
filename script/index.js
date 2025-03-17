@@ -151,6 +151,31 @@ const displayAllCategories = (levels) => {
   vocabularies.appendChild(buttonContainer);
 };
 
+// form validation
+function validateForm(event) {
+  event.preventDefault();
+  const heroSection = document.getElementById("heroSection");
+  const vocabulariesSection = document.getElementById("vocabulariesSection");
+  const faqSection = document.getElementById("faqSection");
+  const nameInput = document.querySelector("input[type='text']");
+  const passwordInput = document.querySelector("input[type='password']");
+  if (nameInput.value.trim() === "") {
+    alert("Please enter your name.");
+    return false;
+  }
+  if (passwordInput.value !== "123456") {
+    alert("Incorrect password! The correct password is '123456'.");
+    return false;
+  }
+  nameInput.value = "";
+  passwordInput.value = "";
+  // alert("Form submitted successfully!");
+  heroSection.classList.add("hidden");
+  vocabulariesSection.classList.remove("hidden");
+  faqSection.classList.remove("hidden");
+  return true;
+}
+
 // Function to update the modal content
 const updateModalContent = (wordData, modalId) => {
   if (!wordData) {

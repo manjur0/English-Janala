@@ -3,3 +3,8 @@ body {
     "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
     sans-serif;
 }
+
+.active {
+  background: #1447e6;
+  color: #fff;
+}

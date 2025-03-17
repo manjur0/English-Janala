@@ -1,5 +1,4 @@
-//Get ⚡ All Levels
-//https://openapi.programming-hero.com/api/levels/all
+//Get ⚡ All Data
 
 // fetching categories
 const loadAllCategories = () => {
@@ -12,7 +11,7 @@ const loadAllCategories = () => {
 const wrodsByLevelCategories = (levelId) => {
   fetch(`https://openapi.programming-hero.com/api/level/${levelId}`)
     .then((res) => res.json())
-    .then((data) => displayAllLevelsWords(data, undefined));
+    .then((data) => displayAllLevelsWords(data));
 };
 
 // get All Words
@@ -24,48 +23,61 @@ const getAllWords = () => {
 };
 
 // get the word by id
-const getWordById = (wordId) => {
-  console.log(wordId);
+const getWordById = (wordId, modalId) => {
   fetch(`https://openapi.programming-hero.com/api/word/${wordId}`)
     .then((res) => res.json())
-    .then((data) => console.log(data.data));
+    .then((data) => {
+      // Call a function to update the modal with the word details
+      updateModalContent(data.data, modalId);
+    })
+    .catch((error) => {
+      console.error("Error fetching word details:", error);
+    });
 };
 
+// pronounceWord
+function pronounceWord(word) {
+  const utterance = new SpeechSynthesisUtterance(word);
+  utterance.lang = "en-US"; // English
+  window.speechSynthesis.speak(utterance);
+}
+
 // display Levels Words
-const displayAllLevelsWords = (levels, wordId) => {
-  console.log(levels);
+const displayAllLevelsWords = (levels) => {
   const vocabCard = document.getElementById("vocabCard");
   vocabCard.innerHTML = "";
 
   // Length 6 is showed by slicing
-
   if (levels) {
     levels.data.slice(0, 6).forEach((level) => {
       const div = document.createElement("div");
-      console.log(level);
-      div.innerHTML = `<div class="card bg-base-100 shadow-lg py-12">
+
+      const modalId = `my_modal_${level.id}`;
+      div.innerHTML = `<div class="card bg-base-100 shadow-lg py-12  ">
             <figure class="flex-col items-center">
               <h2 class="text-2xl font-bold">${level.word}</h2>
               <p class="text-xl font-semibold my-4">Meaning /Pronounciation</p>
-              <h2 class="text-2xl font-bold">"${level.meaning} / ${level.pronunciation} "</h2>
+              <h2 class="text-2xl font-bold">"${
+                level.meaning ? ` ${level.meaning}` : "Not Found"
+              } / ${level.pronunciation} "</h2>
             </figure>
             <!-- Modal  -->
             <div id="modalContainer" class="flex justify-around items-center my-8 ">
-              <div onclick="getWordById('${level.id}')">
-                <button class="btn modal-info-btn" data-modal-id="my_modal_1">
+              <div  onclick="getWordById('${level.id}', '${modalId}')">
+                <button class="btn modal-info-btn" data-modal-id="${modalId}">
                   <i class="fa-solid fa-circle-info cursor-pointer"> </i>
                 </button>
-                <dialog id="my_modal_1" class="modal">
+                <dialog id="${modalId}" class="modal">
                   <div class="modal-box">
-                    <h3 class="text-2xl font-bold mb-4">Meaning</h3>
-                    <p class="text-lg">আগ্রহী</p>
+                    <h3 id="${modalId}-meaning" class="text-2xl font-bold mb-4">Meaning</h3>
+                    <p id="${modalId}-details" class="text-lg"></p>
                     <hr class="my-4" />
-                    <h3 class="text-xl font-bold">Sentence</h3>
-                    <p class="py-4">
-                      Press ESC key or click the button below to close
+                    <h3 id="${modalId}-sentence-title" class="text-xl font-bold">Sentence</h3>
+                    <p id="${modalId}-sentence" class="py-4">
+                      
                     </p>
-                    <h2 class="text-2xl font-bold my-4">সমার্থক শব্দ গুলো</h2>
-                    <button class="btn m-2">1</button>
+                    <h2 id="${modalId}-synonyms-title" class="text-2xl font-bold my-4">সমার্থক শব্দ গুলো</h2>
+                    <div id="${modalId}-synonyms"></div>
                     <div class="my-5">
                       <form method="dialog">
                         <button
@@ -78,7 +90,7 @@ const displayAllLevelsWords = (levels, wordId) => {
                   </div>
                 </dialog>
               </div>
-              <button class="btn">
+              <button onclick="pronounceWord('${level.word}')" class="btn">
                 <i class="fa-solid fa-volume-high cursor-pointer"></i>
               </button>
             </div>
@@ -123,7 +135,6 @@ const displayAllCategories = (levels) => {
     "flex-wrap"
   );
   // vocabularies.textContent = "";
-  // console.log(levels);
   levels.forEach((level) => {
     const div = document.createElement("div");
     div.innerHTML = ` <button 
@@ -138,6 +149,39 @@ const displayAllCategories = (levels) => {
   });
 
   vocabularies.appendChild(buttonContainer);
+};
+
+// Function to update the modal content
+const updateModalContent = (wordData, modalId) => {
+  if (!wordData) {
+    console.error("No word data provided to updateModalContent");
+    return;
+  }
+  const meaningElement = document.getElementById(`${modalId}-details`);
+  const sentenceElement = document.getElementById(`${modalId}-sentence`);
+  const synonymsContainer = document.getElementById(`${modalId}-synonyms`);
+
+  if (meaningElement) {
+    meaningElement.textContent = wordData.meaning || "Meaning not available";
+  }
+  if (sentenceElement) {
+    sentenceElement.textContent = wordData.sentence || "Sentence not available";
+  }
+  if (synonymsContainer) {
+    synonymsContainer.innerHTML = "";
+    if (wordData.synonyms && wordData.synonyms.length > 0) {
+      wordData.synonyms.forEach((synonym) => {
+        const synonymButton = document.createElement("button");
+        synonymButton.classList.add("btn", "m-2");
+        synonymButton.textContent = synonym;
+        synonymsContainer.appendChild(synonymButton);
+      });
+    } else {
+      const noSynonyms = document.createElement("p");
+      noSynonyms.textContent = "No synonyms available.";
+      synonymsContainer.appendChild(noSynonyms);
+    }
+  }
 };
 
 loadAllCategories();

@@ -58,7 +58,7 @@ const displayAllLevelsWords = (levels) => {
               <h2 class="text-2xl font-bold">${level.word}</h2>
               <p class="text-xl font-semibold my-4">Meaning /Pronounciation</p>
               <h2 class="text-2xl font-bold">"${
-                level.meaning ? ` ${level.meaning}` : "Not Found"
+                level.meaning ? ` ${level.meaning}` : "No Word Found"
               } / ${level.pronunciation} "</h2>
             </figure>
             <!-- Modal  -->
@@ -154,6 +154,7 @@ const displayAllCategories = (levels) => {
 // form validation
 function validateForm(event) {
   event.preventDefault();
+  const headerSection = document.getElementById("headerSection");
   const heroSection = document.getElementById("heroSection");
   const vocabulariesSection = document.getElementById("vocabulariesSection");
   const faqSection = document.getElementById("faqSection");
@@ -186,7 +187,8 @@ function validateForm(event) {
   });
 
   // alert("");
-  // heroSection.classList.add("hidden");
+  heroSection.classList.add("hidden");
+  headerSection.classList.remove("hidden");
   vocabulariesSection.classList.remove("hidden");
   faqSection.classList.remove("hidden");
   return true;

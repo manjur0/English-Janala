@@ -193,6 +193,22 @@ function validateForm(event) {
   faqSection.classList.remove("hidden");
   return true;
 }
+// LogOut function
+const logOut = () => {
+  const logOutBtn = document.getElementById("logoutBtn");
+  // section ids
+  const headerSection = document.getElementById("headerSection");
+  const heroSection = document.getElementById("heroSection");
+  const vocabulariesSection = document.getElementById("vocabulariesSection");
+  const faqSection = document.getElementById("faqSection");
+
+  if (logOutBtn) {
+    headerSection.classList.add("hidden");
+    heroSection.classList.remove("hidden");
+    vocabulariesSection.classList.add("hidden");
+    faqSection.classList.add("hidden");
+  }
+};
 
 // Function to update the modal content
 const updateModalContent = (wordData, modalId) => {

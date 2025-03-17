@@ -31,7 +31,6 @@ const getWordById = (wordId) => {
     .then((data) => console.log(data.data));
 };
 
-
 // display Levels Words
 const displayAllLevelsWords = (levels, wordId) => {
   console.log(levels);
@@ -39,6 +38,7 @@ const displayAllLevelsWords = (levels, wordId) => {
   vocabCard.innerHTML = "";
 
   // Length 6 is showed by slicing
+
   if (levels) {
     levels.data.slice(0, 6).forEach((level) => {
       const div = document.createElement("div");

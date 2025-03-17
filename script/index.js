@@ -160,17 +160,33 @@ function validateForm(event) {
   const nameInput = document.querySelector("input[type='text']");
   const passwordInput = document.querySelector("input[type='password']");
   if (nameInput.value.trim() === "") {
-    alert("Please enter your name.");
+    Swal.fire({
+      title: "Oops...",
+      text: "Please enter your name.",
+      icon: "question",
+    });
     return false;
   }
   if (passwordInput.value !== "123456") {
-    alert("Incorrect password! The correct password is '123456'.");
+    Swal.fire({
+      icon: "error",
+      title: "Oops...",
+      text: "Incorrect password! The correct password is '123456'.",
+    });
+    nameInput.value = "";
+    passwordInput.value = "";
     return false;
   }
   nameInput.value = "";
   passwordInput.value = "";
-  // alert("Form submitted successfully!");
-  heroSection.classList.add("hidden");
+  Swal.fire({
+    title: "Form submitted successfully!",
+    icon: "success",
+    draggable: true,
+  });
+
+  // alert("");
+  // heroSection.classList.add("hidden");
   vocabulariesSection.classList.remove("hidden");
   faqSection.classList.remove("hidden");
   return true;

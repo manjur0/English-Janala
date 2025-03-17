@@ -15,6 +15,18 @@ const wrodsByLevelCategories = (levelId) => {
     .then((data) => displayAllLevelsWords(data));
 };
 
+// get the word by id
+const getWordById = (id) => {
+  fetch(`https://openapi.programming-hero.com/api/word/${id}`)
+    .then((res) => res.json())
+    .then((data) => displayWordDetails(data.data));
+};
+
+// display the modal with words details
+const displayWordDetails = (word) => {
+  console.log(word);
+};
+
 // display Levels Words
 const displayAllLevelsWords = (levels) => {
   console.log(levels.data);
@@ -32,7 +44,7 @@ const displayAllLevelsWords = (levels) => {
               <h2 class="text-2xl font-bold">"${level.meaning} / ${level.pronunciation}"</h2>
             </figure>
             <div class="flex justify-around items-center my-8">
-              <i class="fa-solid fa-circle-info cursor-pointer"></i>
+              <i onclick="getWordById('${level.id}')" class="fa-solid fa-circle-info cursor-pointer"></i>
               <i class="fa-solid fa-volume-high cursor-pointer"></i>
             </div>
           </div>`;
@@ -41,6 +53,8 @@ const displayAllLevelsWords = (levels) => {
   }
   if (levels.data.length > 0) {
     const initialDiv = document.getElementById("initialDiv");
+    const epmtyDiv = document.getElementById("emptyDiv");
+    epmtyDiv.classList.add("hidden");
     initialDiv.classList.add("hidden");
   }
   if (levels.data.length === 0) {

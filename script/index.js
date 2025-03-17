@@ -1,13 +1,27 @@
 //Get ⚡ All Levels
 //https://openapi.programming-hero.com/api/levels/all
 
-const loadAllLevels = () => {
+// fetching categories
+const loadAllCategories = () => {
   fetch("https://openapi.programming-hero.com/api/levels/all")
     .then((res) => res.json())
-    .then((data) => displayAllLevels(data.data));
+    .then((data) => displayAllCategories(data.data));
 };
 
-const displayAllLevels = (levels) => {
+// fatching level wiht the clicked button
+const wrodsByLevelCategories = (levelId) => {
+  fetch(`https://openapi.programming-hero.com/api/level/${levelId}`)
+    .then((res) => res.json())
+    .then((data) => displayAllLevelsWords(data));
+};
+
+// display Levels Words
+const displayAllLevelsWords = (levels) => {
+  console.log(levels);
+};
+
+// display categories
+const displayAllCategories = (levels) => {
   const vocabularies = document.getElementById("vocabularies");
   const buttonContainer = document.createElement("div");
   buttonContainer.classList.add(
@@ -18,24 +32,22 @@ const displayAllLevels = (levels) => {
     "gap-5",
     "flex-wrap"
   );
-  vocabularies.textContent = ""; // Clear existing content
-
+  // vocabularies.textContent = "";
+  // console.log(levels);
   levels.forEach((level) => {
-    const button = document.createElement("button");
-    button.classList.add(
-      "btn",
-      "btn-outline",
-      "border",
-      "border-blue-700",
-      "text-blue-700",
-      "hover:bg-blue-700",
-      "hover:text-white"
-    );
-    button.innerHTML = `<img src="assets/fa-book-open.png" alt="" /> Lesson -${level.level_no}`;
-    buttonContainer.appendChild(button);
-    console.log(level);
+    const div = document.createElement("div");
+    div.innerHTML = ` <button
+            class="btn btn-outline border border-blue-700 text-blue-700 hover:bg-blue-700 hover:text-white"
+             onclick="wrodsByLevelCategories('${level.level_no}')"
+          >
+            ${level.lessonName} - ${level.level_no} 
+
+          </button> `;
+
+    buttonContainer.appendChild(div);
   });
+
   vocabularies.appendChild(buttonContainer);
 };
 
-loadAllLevels();
+loadAllCategories();

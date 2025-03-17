@@ -17,7 +17,31 @@ const wrodsByLevelCategories = (levelId) => {
 
 // display Levels Words
 const displayAllLevelsWords = (levels) => {
-  console.log(levels);
+  console.log(levels.data);
+  const vocabCard = document.getElementById("vocabCard");
+  vocabCard.textContent = "";
+  // Length 6 is showed by slicing
+  if (levels) {
+    levels.data.slice(0, 6).forEach((level) => {
+      const div = document.createElement("div");
+      console.log(level);
+      div.innerHTML = `<div class="card bg-base-100 shadow-lg py-12">
+            <figure class="flex-col items-center">
+              <h2 class="text-2xl font-bold">${level.word}</h2>
+              <p class="text-xl font-semibold my-4">Meaning /Pronounciation</p>
+              <h2 class="text-2xl font-bold">"${level.meaning} / ${level.pronunciation}"</h2>
+            </figure>
+            <div class="flex justify-around items-center my-8">
+              <i class="fa-solid fa-circle-info cursor-pointer"></i>
+              <i class="fa-solid fa-volume-high cursor-pointer"></i>
+            </div>
+          </div>`;
+      vocabCard.appendChild(div);
+    });
+  }
+  if (levels.data.length === 0) {
+    console.log("no data");
+  }
 };
 
 // display categories
@@ -36,11 +60,11 @@ const displayAllCategories = (levels) => {
   // console.log(levels);
   levels.forEach((level) => {
     const div = document.createElement("div");
-    div.innerHTML = ` <button
+    div.innerHTML = ` <button 
             class="btn btn-outline border border-blue-700 text-blue-700 hover:bg-blue-700 hover:text-white"
              onclick="wrodsByLevelCategories('${level.level_no}')"
-          >
-            ${level.lessonName} - ${level.level_no} 
+          > 
+            ${level.lessonName} -  ${level.level_no} 
 
           </button> `;
 
